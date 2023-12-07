@@ -1,0 +1,2 @@
+Benchmark           Mode  Cnt      Score      Error  Units
+Day4Benchmark.init    ss    5  33051.333 ± 5337.773  us/op
