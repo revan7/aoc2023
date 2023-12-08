@@ -1,8 +1,14 @@
 package solutions;
 
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Day7 {
 
@@ -86,6 +92,7 @@ public class Day7 {
         return part2(game);
     }
 
+    @Benchmark
     static Long part2(Map<String, Integer> game) {
         List<Map.Entry<String, Integer>> gameSorted = new ArrayList<>(game.entrySet().stream().sorted((a, b) -> {
             Integer rankA = getRank(a.getKey()).value;
@@ -137,15 +144,10 @@ public class Day7 {
         Long count = 1L;
         Long result = 0L;
 
-        System.out.println(gameSorted);
-        for (var entry : gameSorted) {
-            System.out.println(entry.getKey() + " " + getRank(entry.getKey()));
-        }
         while(!gameSorted.isEmpty()) {
             result += (game.get(gameSorted.remove(0).getKey()) * count);
             count++;
         }
-        System.out.println(count);
         return result;
     }
     //KKKAK

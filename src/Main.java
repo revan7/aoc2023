@@ -1,8 +1,13 @@
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
 import solutions.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -19,7 +24,8 @@ public class Main {
 //        daySix_partOne();
 //        daySix_partTwo();
 //        daySeven_partOne();
-        daySeven_partTwo();
+        //daySeven_partTwo();
+        dayEight_partOne();
     }
 
 
@@ -118,6 +124,13 @@ public class Main {
         try (BufferedReader br = new BufferedReader(new FileReader("day_seven.txt"))) {
             var solution = Day7.solvePart2(br);
             System.out.println("Day 7 part two answer: " + solution);
+        }
+    }
+
+    public static void dayEight_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_eight.txt"))) {
+            var solution = Day8.solvePart1(br);
+            System.out.println("Day 8 part one answer: " + solution);
         }
     }
 
