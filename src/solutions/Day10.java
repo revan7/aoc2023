@@ -1,5 +1,7 @@
 package solutions;
 
+import org.apache.commons.math3.stat.descriptive.StorelessUnivariateStatistic;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -154,13 +156,36 @@ public class Day10 {
         return longestDistance;
     }
 
+    static void fillGradientMap(char[][] map, int[][] gradientMap, int r, int c, int[] dx) {
+        if (dx[0] == 0) {
+            for (int i = 0; i < map.length; i ++) {
+                for (int j = c; j >= 0 && j < map[0].length; j += dx[1]) {
+                    if (map[i][j] == '.') {
+                        gradientMap[i][j]++;
+                        System.out.println("Increasing gradient point in " + i + " " + j);
+                    }
+                }
+            }
+        }
+
+        if (dx[1] == 0) {
+            for (int i = r; i >= 0 && i < map.length; i += dx[0]) {
+                for (int j = 0; j < map[0].length; j ++) {
+                    if (map[i][j] == '.') {
+                        gradientMap[i][j]++;
+                        System.out.println("Increasing gradient point in " + i + " " + j);
+                    }
+                }
+            }
+        }
+    }
+
 
     //TODO from visited to visited fill, skip next visited, repeat
     public static Long part2(char[][] map, int r, int c) {
         boolean[][] visited = new boolean[map.length][map[0].length];
         Queue<Node> queue = new LinkedList<>();
         visited[r][c] = true;
-        long longestDistance = 0;
         for (int rx = -1; rx <= 1; rx++) {
             for (int cx = -1; cx <= 1; cx++) {
                 if (rx == cx) continue;
@@ -175,7 +200,6 @@ public class Day10 {
         while (!queue.isEmpty()) {
             Node n = queue.poll();
             //System.out.println("Doing node: " + n.r + " " + n.c + " (" + map[n.r][n.c] + ") Step: " + n.step);
-            longestDistance = Math.max(longestDistance, n.step);
             visited[n.r][n.c] = true;
             for (int[] dx : directions.get(map[n.r][n.c])) {
                 int newR = dx[0] + n.r;
@@ -193,6 +217,7 @@ public class Day10 {
             }
             System.out.println();
         }
+        long tiles = 0;
         for (int i = 0; i < map.length; i ++) {
             for (int j = 0; j < map[0].length; j ++) {
                 if (!visited[i][j]) {
@@ -200,37 +225,39 @@ public class Day10 {
                 }
             }
         }
+        //FILL
         for (int i = 0; i < map.length; i ++) {
-            int visitedCount = 0;
             for (int j = 0; j < map[0].length; j ++) {
-                if (visited[i][j]) {
-                    visitedCount++;
-                    continue;
-                }
-                if (visitedCount % 2 == 0) fill(i, j, map, visited);
+                if (visited[i][j]) break;
+                fill(i, j, map, visited);
+            }
+            for (int j = map[0].length -1; j >= 0; j --) {
+                if (visited[i][j]) break;
+                fill(i, j, map, visited);
             }
         }
 
         for (int i = 0; i < map[0].length; i ++) {
-            int visitedCount = 0;
             for (int j = 0; j < map.length; j ++) {
-                if (visited[j][i]) {
-                    visitedCount++;
-                    continue;
-                }
-                if (visitedCount % 2 == 0) fill(j, i, map, visited);
+                if (visited[j][i]) break;
+                fill(j, i, map, visited);
+            }
+
+            for (int j = map.length - 1; j >= 0; j --) {
+                if (visited[j][i]) break;
+                fill(j, i, map, visited);
             }
         }
         System.out.println();
         System.out.println("POST FILL MAP: ");
+        sanitise(map);
         for (int i = 0; i < map.length; i ++) {
             for (int j = 0; j < map[0].length; j ++) {
                 System.out.print(map[i][j]);
             }
             System.out.println();
         }
-        System.out.println();
-        return longestDistance;
+        return tiles;
     }
 
     static void fill(int r, int c, char[][] map, boolean[][] bound) {
@@ -288,7 +315,44 @@ public class Day10 {
         dx.put(1, Map.of(0, List.of('|', 'L', 'J')));
         dx.put(0, Map.of(-1, List.of('-', 'L', 'F'), 1, List.of('-', 'J', '7')));
         part2(map, sr, sc);
-        return part2FindTiles(map, sr, sc);
+        long count = 0;
+        for (int i = 0; i < map.length; i ++ ){
+            for (int j = 0; j < map[0].length; j ++) {
+                if (map[i][j] == '.') count++;
+            }
+        }
+        return count;
+    }
+
+    static void sanitise(char[][] map) {
+        for (int i = 0; i < map.length; i ++) {
+            for (int j = 0; j < map[0].length; j ++) {
+                if (map[i][j] == '.') {
+                    int hw = horizontalWalls(i, j, map);
+                    if (hw % 2 == 0) map[i][j] = '0';
+                }
+            }
+        }
+    }
+
+    private static int horizontalWalls(int i, int j, char[][] map) {
+        int horizontalWalls = 0;
+        char prev = map[i][j];
+        for (int col = j + 1; col < map[0].length; col ++) {
+            char curr = map[i][col];
+            if (curr == '-') {
+                while (curr == '-') {
+                    col++;
+                    curr = map[i][col];
+                }
+            }
+            if (curr == 'S') horizontalWalls++;
+            if (curr == '7' && prev == 'L') horizontalWalls++;
+            if (curr == 'J' && prev == 'F') horizontalWalls++;
+            if (curr == '|') horizontalWalls++;
+            prev = curr;
+        }
+        return horizontalWalls;
     }
 
     static Long part2FindTiles(char[][] map, int r, int c) {
@@ -309,7 +373,7 @@ public class Day10 {
         long tiles = 0;
         while (!queue.isEmpty()) {
             Node n = queue.poll();
-            System.out.println("Doing node: " + n.r + " " + n.c + " (" + map[n.r][n.c] + ") Step: " + n.step);
+            //System.out.println("Doing node: " + n.r + " " + n.c + " (" + map[n.r][n.c] + ") Step: " + n.step);
             visited[n.r][n.c] = true;
             if (map[n.r][n.c] == '0') continue;
             for (int[] dx : directions.get(map[n.r][n.c])) {
@@ -332,6 +396,7 @@ public class Day10 {
                 }
             }
         }
+        System.out.println();
         return tiles;
     }
 
