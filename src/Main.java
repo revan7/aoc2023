@@ -23,7 +23,8 @@ public class Main {
         //daySeven_partTwo();
 //        dayEight_partOne();
 //        dayNine_partOne();
-        dayNine_partTwo();
+//        dayNine_partTwo();
+        dayTen_partOne();
     }
 
 
@@ -118,6 +119,13 @@ public class Main {
         }
     }
 
+    public static void dayEight_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_eight.txt"))) {
+            var solution = Day8.solvePart2(br);
+            System.out.println("Day 8 part one answer: " + solution);
+        }
+    }
+
     public static void daySeven_partTwo() throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader("day_seven.txt"))) {
             var solution = Day7.solvePart2(br);
@@ -125,16 +133,12 @@ public class Main {
         }
     }
 
-    public static void dayEight_partOne() throws IOException {
-        try (BufferedReader br = new BufferedReader(new FileReader("day_eight.txt"))) {
-            var solution = Day8.solvePart2(br);
-            System.out.println("Day 8 part one answer: " + solution);
-    }
     public static void dayNine_partOne() throws IOException {
-            try (BufferedReader br = new BufferedReader(new FileReader("day_nine.txt"))) {
-                var solution = Day9.solvePart1(br);
-                System.out.println("Day 9 part one answer: " + solution);
+        try (BufferedReader br = new BufferedReader(new FileReader("day_nine.txt"))) {
+            var solution = Day9.solvePart1(br);
+            System.out.println("Day 9 part one answer: " + solution);
         }
+    }
 
     public static void dayNine_partTwo() throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader("day_nine.txt"))) {
@@ -143,4 +147,10 @@ public class Main {
         }
     }
 
+    public static void dayTen_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_ten_example.txt"))) {
+            var solution = Day10.solvePart1(br);
+            System.out.println("Day 9 part two answer: " + solution);
+        }
+    }
 }
