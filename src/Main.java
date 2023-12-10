@@ -1,3 +1,4 @@
+
 import solutions.*;
 
 import java.io.BufferedReader;
@@ -20,7 +21,9 @@ public class Main {
 //        daySix_partTwo();
 //        daySeven_partOne();
         //daySeven_partTwo();
-        dayEight_partOne();
+//        dayEight_partOne();
+//        dayNine_partOne();
+        dayNine_partTwo();
     }
 
 
@@ -126,14 +129,18 @@ public class Main {
         try (BufferedReader br = new BufferedReader(new FileReader("day_eight.txt"))) {
             var solution = Day8.solvePart2(br);
             System.out.println("Day 8 part one answer: " + solution);
+    }
+    public static void dayNine_partOne() throws IOException {
+            try (BufferedReader br = new BufferedReader(new FileReader("day_nine.txt"))) {
+                var solution = Day9.solvePart1(br);
+                System.out.println("Day 9 part one answer: " + solution);
+        }
+
+    public static void dayNine_partTwo() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_nine.txt"))) {
+            var solution = Day9.solvePart2(br);
+            System.out.println("Day 9 part two answer: " + solution);
         }
     }
 
 }
-//245942328 WRONG
-//246149935 WRONG
-//246181539 WRONG
-//246350798 WRONG
-//246236009 WRONG
-//246349006 WRONG
-//245799468 WRONG
