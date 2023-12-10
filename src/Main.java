@@ -149,8 +149,8 @@ public class Main {
 
     public static void dayTen_partOne() throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader("day_ten_example.txt"))) {
-            var solution = Day10.solvePart1(br);
-            System.out.println("Day 9 part two answer: " + solution);
+            var solution = Day10.solvePart2(br);
+            System.out.println("Day 10 part one answer: " + solution);
         }
     }
 }
