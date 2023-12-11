@@ -210,13 +210,13 @@ public class Day10 {
                 }
             }
         }
-        System.out.println("BOOLEAN MAP: ");
+  /*      System.out.println("BOOLEAN MAP: ");
         for (int i = 0; i < map.length; i ++) {
             for (int j = 0; j < map[0].length; j ++) {
                 System.out.print(visited[i][j] ? "X" : " ");
             }
             System.out.println();
-        }
+        }*/
         long tiles = 0;
         for (int i = 0; i < map.length; i ++) {
             for (int j = 0; j < map[0].length; j ++) {
@@ -249,14 +249,14 @@ public class Day10 {
             }
         }
         System.out.println();
-        System.out.println("POST FILL MAP: ");
+//        System.out.println("POST FILL MAP: ");
         sanitise(map);
-        for (int i = 0; i < map.length; i ++) {
+/*        for (int i = 0; i < map.length; i ++) {
             for (int j = 0; j < map[0].length; j ++) {
                 System.out.print(map[i][j]);
             }
             System.out.println();
-        }
+        }*/
         return tiles;
     }
 
