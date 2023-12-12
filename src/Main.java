@@ -1,8 +1,4 @@
 
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
 import solutions.*;
 
 import java.io.BufferedReader;
@@ -33,7 +29,8 @@ public class Main {
 //        dayNine_partTwo();
 //        dayTen_partOne();
 //        dayEleven_partOne();
-        dayEleven_partTwo();
+//        dayEleven_partTwo();
+          dayTwelve_partOne();
     }
 
 
@@ -177,12 +174,16 @@ public class Main {
         }
     }
 
-    @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    @BenchmarkMode(Mode.SingleShotTime)
     public static void dayEleven_partTwo() throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader("day_eleven.txt"))) {
             var solution = Day11.solvePart2(br);
+            System.out.println("Day 11 part two answer: " + solution);
+        }
+    }
+
+    public static void dayTwelve_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_twelve_example.txt"))) {
+            var solution = Day12.solvePart1(br);
             System.out.println("Day 11 part two answer: " + solution);
         }
     }
