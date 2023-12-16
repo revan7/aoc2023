@@ -4,12 +4,13 @@ import solutions.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 //        dayOne_partOne();
 //        dayOne_partTwo();
 //        dayTwo_partOne();
@@ -29,8 +30,16 @@ public class Main {
 //        dayNine_partTwo();
 //        dayTen_partOne();
 //        dayEleven_partOne();
-//        dayEleven_partTwo();
-          dayTwelve_partOne();
+///        dayEleven_partTwo();
+//        dayThirteen_partOne();
+//        dayThirteen_partTwo();
+//          dayFourteen_partOne();
+//            dayFourteen_partTwo();
+//        dayFifteen_partOne();
+//        dayFifteen_partTwo();
+//        daySixteen_partOne();
+          daySixteen_partTwo();
+
     }
 
 
@@ -181,11 +190,63 @@ public class Main {
         }
     }
 
-    public static void dayTwelve_partOne() throws IOException {
-        try (BufferedReader br = new BufferedReader(new FileReader("day_twelve_example.txt"))) {
-            var solution = Day12.solvePart1(br);
-            System.out.println("Day 11 part two answer: " + solution);
+    public static void dayThirteen_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_thirteen.txt"))) {
+            var solution = Day13.solvePart1(br);
+            System.out.println("Day 13 part one answer: " + solution);
         }
     }
-    //738170240060
+
+    public static void dayThirteen_partTwo() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_thirteen.txt"))) {
+            var solution = Day13.solvePart2(br);
+            System.out.println("Day 13 part two answer: " + solution);
+        }
+    }
+
+    public static void dayFourteen_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_fourteen_example.txt"))) {
+            var solution = Day14.solvePart1(br);
+            System.out.println("Day 14 part one answer: " + solution);
+        }
+    }
+
+    public static void dayFourteen_partTwo() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_fourteen.txt"))) {
+            var solution = Day14.solvePart2(br);
+            System.out.println("Day 14 part two answer: " + solution);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void dayFifteen_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_fifteen.txt"))) {
+            var solution = Day15.solvePart1(br);
+            System.out.println("Day 15 part one answer: " + solution);
+        }
+    }
+
+    //wrong too low: 211965 235010
+    public static void dayFifteen_partTwo() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_fifteen.txt"))) {
+            var solution = Day15.solvePart2(br);
+            System.out.println("Day 15 part two answer: " + solution);
+        }
+    }
+
+    public static void daySixteen_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_sixteen.txt"))) {
+            var solution = Day16.solvePart1(br);
+            System.out.println("Day 15 part one answer: " + solution);
+        }
+    }
+
+    public static void daySixteen_partTwo() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_sixteen.txt"))) {
+            var solution = Day16.solvePart2(br);
+            System.out.println("Day 15 part two answer: " + solution);
+        }
+    }
+
 }
