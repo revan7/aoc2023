@@ -38,7 +38,9 @@ public class Main {
 //        dayFifteen_partOne();
 //        dayFifteen_partTwo();
 //        daySixteen_partOne();
-          daySixteen_partTwo();
+//          daySixteen_partTwo();
+//        daySeventeen_partOne();
+        daySeventeen_partTwo();
 
     }
 
@@ -246,6 +248,20 @@ public class Main {
         try (BufferedReader br = new BufferedReader(new FileReader("day_sixteen.txt"))) {
             var solution = Day16.solvePart2(br);
             System.out.println("Day 15 part two answer: " + solution);
+        }
+    }
+
+    public static void daySeventeen_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_seventeen.txt"))) {
+            var solution = Day17.solvePart1(br);
+            System.out.println("Day 17 part one answer: " + solution);
+        }
+    }
+
+    public static void daySeventeen_partTwo() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_seventeen.txt"))) {
+            var solution = Day17.solvePart2(br);
+            System.out.println("Day 17 part two answer: " + solution);
         }
     }
 
