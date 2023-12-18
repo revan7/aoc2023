@@ -40,7 +40,9 @@ public class Main {
 //        daySixteen_partOne();
 //          daySixteen_partTwo();
 //        daySeventeen_partOne();
-        daySeventeen_partTwo();
+//        daySeventeen_partTwo();
+//        dayEighteen_partOne();
+        dayEighteen_partTwo();
 
     }
 
@@ -262,6 +264,19 @@ public class Main {
         try (BufferedReader br = new BufferedReader(new FileReader("day_seventeen.txt"))) {
             var solution = Day17.solvePart2(br);
             System.out.println("Day 17 part two answer: " + solution);
+        }
+    }
+    public static void dayEighteen_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_eighteen.txt"))) {
+            var solution = Day18.solvePart1(br);
+            System.out.println("Day 18 part one answer: " + solution);
+        }
+    }
+
+    public static void dayEighteen_partTwo() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_eighteen.txt"))) {
+            var solution = Day18.solvePart2(br);
+            System.out.println("Day 18 part two answer: " + solution);
         }
     }
 
