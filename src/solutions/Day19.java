@@ -75,10 +75,10 @@ public class Day19 {
         in.traverseRange("in", start, workflowMap, accepted);
         Set<String> duplicate = new HashSet<>();
         for (var a : accepted) {
-            if (!duplicate.add(a.toString())) continue;
+            //if (!duplicate.add(a.toString())) continue;
             result += (a.getRange("x") * a.getRange("m") * a.getRange("a") * a.getRange("s"));
             //result += (a.x.max * a.s.max * a.m.max * a.a.max);
-            //result += (a.x.min * a.s.min * a.m.min * a.a.min);
+            //result -= (a.x.min * a.s.min * a.m.min * a.a.min);
         }
         return result;
     }
@@ -167,17 +167,32 @@ public class Day19 {
                     int i = rule.condition.contains("<") ? rule.condition.indexOf("<") : rule.condition.indexOf(">");
                     String name = rule.condition.substring(0, i);
                     Long value = Long.parseLong(rule.condition.substring(i + 1));
-                    RangePart greater = part.getCopyWithGreater(name, value - 1);
-                    RangePart lesser = part.getCopyWithLesser(name, value + 1);
-                    if (greater.rate(rule)) {
-                        workflowMap.get(rule.destination).traverseRange(rule.destination, greater, workflowMap, accepted);
+                    if (rule.condition.contains("<")) {
+                        RangePart greater = part.getCopyWithGreater(name, value - 1);
+                        RangePart lesser = part.getCopyWithLesser(name, value);
+                        if (greater.rate(rule)) {
+                            workflowMap.get(rule.destination).traverseRange(rule.destination, greater, workflowMap, accepted);
+                        } else {
+                            part = greater;
+                        }
+                        if (lesser.rate(rule)) {
+                            workflowMap.get(rule.destination).traverseRange(rule.destination, lesser, workflowMap, accepted);
+                        } else {
+                            part = lesser;
+                        }
                     } else {
-                        part = greater;
-                    }
-                    if (lesser.rate(rule)) {
-                        workflowMap.get(rule.destination).traverseRange(rule.destination, lesser, workflowMap, accepted);
-                    } else {
-                        part = lesser;
+                        RangePart greater = part.getCopyWithGreater(name, value);
+                        RangePart lesser = part.getCopyWithLesser(name, value + 1);
+                        if (greater.rate(rule)) {
+                            workflowMap.get(rule.destination).traverseRange(rule.destination, greater, workflowMap, accepted);
+                        } else {
+                            part = greater;
+                        }
+                        if (lesser.rate(rule)) {
+                            workflowMap.get(rule.destination).traverseRange(rule.destination, lesser, workflowMap, accepted);
+                        } else {
+                            part = lesser;
+                        }
                     }
                 }
             }
@@ -276,10 +291,10 @@ public class Day19 {
         }
 
         long getRange(String name) {
-            if (name.equals(x.name)) return x.max - x.min;
-            if (name.equals(m.name)) return m.max - m.min;
-            if (name.equals(a.name)) return a.max - a.min;
-            return s.max - s.min;
+            if (name.equals(x.name)) return x.max - x.min + 1;
+            if (name.equals(m.name)) return m.max - m.min + 1;
+            if (name.equals(a.name)) return a.max - a.min + 1;
+            return s.max - s.min + 1;
         }
 
         RangePart getCopyWithGreater(String name, Long value) {

@@ -42,8 +42,9 @@ public class Main {
 //        daySeventeen_partOne();
 //        daySeventeen_partTwo();
 //        dayEighteen_partOne();
-        dayEighteen_partTwo();
-
+//        dayEighteen_partTwo();
+//        dayNineteen_partOne();
+        dayNineteen_partTwo();
     }
 
 
@@ -194,6 +195,20 @@ public class Main {
         }
     }
 
+    public static void dayTwelve_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_twelve.txt"))) {
+            var solution = Day12.solvePart1(br);
+            System.out.println("Day 12 part one answer: " + solution);
+        }
+    }
+
+    public static void dayTwelve_partTwo() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_twelve.txt"))) {
+            var solution = Day12.solvePart2(br);
+            System.out.println("Day 12 part one answer: " + solution);
+        }
+    }
+
     public static void dayThirteen_partOne() throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader("day_thirteen.txt"))) {
             var solution = Day13.solvePart1(br);
@@ -277,6 +292,20 @@ public class Main {
         try (BufferedReader br = new BufferedReader(new FileReader("day_eighteen.txt"))) {
             var solution = Day18.solvePart2(br);
             System.out.println("Day 18 part two answer: " + solution);
+        }
+    }
+
+    public static void dayNineteen_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_nineteen.txt"))) {
+            var solution = Day19.solvePart1(br);
+            System.out.println("Day 19 part one answer: " + solution);
+        }
+    }
+
+    public static void dayNineteen_partTwo() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_nineteen.txt"))) {
+            var solution = Day19.solvePart2(br);
+            System.out.println("Day 19 part two answer: " + solution);
         }
     }
 
