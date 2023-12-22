@@ -30,7 +30,9 @@ public class Main {
 //        dayNine_partTwo();
 //        dayTen_partOne();
 //        dayEleven_partOne();
-///        dayEleven_partTwo();
+//        dayEleven_partTwo();
+//            dayTwelve_partOne();
+//            dayTwelve_partTwo();
 //        dayThirteen_partOne();
 //        dayThirteen_partTwo();
 //          dayFourteen_partOne();
@@ -44,7 +46,14 @@ public class Main {
 //        dayEighteen_partOne();
 //        dayEighteen_partTwo();
 //        dayNineteen_partOne();
-        dayNineteen_partTwo();
+//        dayNineteen_partTwo();
+//        dayTwenty_partOne();
+//        dayTwenty_partOne();
+//        dayTwenty_partOTwo();
+//        dayTwentyOne_partOne();
+//          dayTwentyOne_partOTwo();
+          dayTwentyTwo_partOne();
+          //dayTwentyTwo_partTwo();
     }
 
 
@@ -203,7 +212,7 @@ public class Main {
     }
 
     public static void dayTwelve_partTwo() throws IOException {
-        try (BufferedReader br = new BufferedReader(new FileReader("day_twelve.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_twelve_example.txt"))) {
             var solution = Day12.solvePart2(br);
             System.out.println("Day 12 part one answer: " + solution);
         }
@@ -306,6 +315,49 @@ public class Main {
         try (BufferedReader br = new BufferedReader(new FileReader("day_nineteen.txt"))) {
             var solution = Day19.solvePart2(br);
             System.out.println("Day 19 part two answer: " + solution);
+        }
+    }
+
+    public static void dayTwenty_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_twenty.txt"))) {
+            var solution = Day20.solvePart1(br);
+            System.out.println("Day 20 part two answer: " + solution);
+        }
+    }
+
+    public static void dayTwenty_partOTwo() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_twenty.txt"))) {
+            var solution = Day20.solvePart2(br);
+            System.out.println("Day 20 part two answer: " + solution);
+        }
+    }
+
+    public static void dayTwentyOne_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_twentyone.txt"))) {
+            var solution = Day21.solvePart1(br);
+            System.out.println("Day 21 part two answer: " + solution);
+        }
+    }
+
+    public static void dayTwentyOne_partOTwo() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_twentyone.txt"))) {
+            var solution = Day21.solvePart2(br);
+            System.out.println("Day 21 part two answer: " + solution);
+        }
+    }
+
+    //too high 1323, 1199
+    public static void dayTwentyTwo_partOne() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_twentytwo_example.txt"))) {
+            var solution = Day22.solvePart1(br);
+            System.out.println("Day 22 part one answer: " + solution);
+        }
+    }
+
+    public static void dayTwentyTwo_partTwo() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("day_twentytwo.txt"))) {
+            var solution = Day22.solvePart2(br);
+            System.out.println("Day 22 part two answer: " + solution);
         }
     }
 

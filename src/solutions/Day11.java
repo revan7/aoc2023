@@ -1,15 +1,15 @@
 package solutions;
 
 
-import org.openjdk.jmh.annotations.*;
-
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.security.spec.RSAOtherPrimeInfo;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 public class Day11 {
 
@@ -142,9 +142,6 @@ public class Day11 {
     }
 
 
-    @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    @BenchmarkMode(Mode.SingleShotTime)
     public static Long solvePart2(BufferedReader br) throws IOException {
         String line = br.readLine();
         LinkedList<List<Character>> map = new LinkedList<>();
@@ -266,9 +263,6 @@ public class Day11 {
             {0, 1},
     };
 
-    @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    @BenchmarkMode(Mode.AverageTime)
     public static void bfs(Node[][] universe, Node n, long[][] distanceMap) {
         PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingLong(a -> a.step));
         long previousStep = n.step;
@@ -305,9 +299,6 @@ public class Day11 {
         return r < universe.length && c < universe[0].length;
     }
 
-    @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    @BenchmarkMode(Mode.SingleShotTime)
     public static Long solveBfs(Node[][] universe, List<Node> nodes) {
         long[][] distances = new long[nodes.size()][nodes.size()];
         for (var row : distances) {

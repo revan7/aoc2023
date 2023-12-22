@@ -63,18 +63,12 @@ public class Day18 {
         Point origin = new Point(0,0);
         List<Point> points = new LinkedList<>();
         points.add(origin);
-        int maxR = 0;
-        int maxC = 0;
         for (var instruction : instructions) {
             int vx = instruction.length * directions.get(instruction.direction)[0];
             int vy = instruction.length * directions.get(instruction.direction)[1];
             Point next = new Point(origin.x + vx, origin.y + vy);
             points.add(next);
             origin = next;
-        }
-        for (var p : points) {
-            maxR = Math.max(maxR, p.y);
-            maxC = Math.max(maxC, p.x);
         }
         System.out.println(points);
         long perimeter = getPerimeter(points);

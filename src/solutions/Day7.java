@@ -1,9 +1,5 @@
 package solutions;
 
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -92,7 +88,6 @@ public class Day7 {
         return part2(game);
     }
 
-    @Benchmark
     static Long part2(Map<String, Integer> game) {
         List<Map.Entry<String, Integer>> gameSorted = new ArrayList<>(game.entrySet().stream().sorted((a, b) -> {
             Integer rankA = getRank(a.getKey()).value;

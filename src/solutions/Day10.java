@@ -1,6 +1,5 @@
 package solutions;
 
-import org.apache.commons.math3.stat.descriptive.StorelessUnivariateStatistic;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -158,7 +157,7 @@ public class Day10 {
 
     static void fillGradientMap(char[][] map, int[][] gradientMap, int r, int c, int[] dx) {
         if (dx[0] == 0) {
-            for (int i = 0; i < map.length; i ++) {
+            for (int i = 0; i < map.length; i++) {
                 for (int j = c; j >= 0 && j < map[0].length; j += dx[1]) {
                     if (map[i][j] == '.') {
                         gradientMap[i][j]++;
@@ -170,7 +169,7 @@ public class Day10 {
 
         if (dx[1] == 0) {
             for (int i = r; i >= 0 && i < map.length; i += dx[0]) {
-                for (int j = 0; j < map[0].length; j ++) {
+                for (int j = 0; j < map[0].length; j++) {
                     if (map[i][j] == '.') {
                         gradientMap[i][j]++;
                         System.out.println("Increasing gradient point in " + i + " " + j);
@@ -218,32 +217,32 @@ public class Day10 {
             System.out.println();
         }*/
         long tiles = 0;
-        for (int i = 0; i < map.length; i ++) {
-            for (int j = 0; j < map[0].length; j ++) {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[0].length; j++) {
                 if (!visited[i][j]) {
                     map[i][j] = '.';
                 }
             }
         }
         //FILL
-        for (int i = 0; i < map.length; i ++) {
-            for (int j = 0; j < map[0].length; j ++) {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[0].length; j++) {
                 if (visited[i][j]) break;
                 fill(i, j, map, visited);
             }
-            for (int j = map[0].length -1; j >= 0; j --) {
+            for (int j = map[0].length - 1; j >= 0; j--) {
                 if (visited[i][j]) break;
                 fill(i, j, map, visited);
             }
         }
 
-        for (int i = 0; i < map[0].length; i ++) {
-            for (int j = 0; j < map.length; j ++) {
+        for (int i = 0; i < map[0].length; i++) {
+            for (int j = 0; j < map.length; j++) {
                 if (visited[j][i]) break;
                 fill(j, i, map, visited);
             }
 
-            for (int j = map.length - 1; j >= 0; j --) {
+            for (int j = map.length - 1; j >= 0; j--) {
                 if (visited[j][i]) break;
                 fill(j, i, map, visited);
             }
@@ -269,8 +268,8 @@ public class Day10 {
             Node n = queue.poll();
             if (bound[n.r][n.c]) continue;
             map[n.r][n.c] = '0';
-            for (int rx = -1; rx <= 1; rx ++) {
-                for (int cx = -1; cx <= 1; cx ++) {
+            for (int rx = -1; rx <= 1; rx++) {
+                for (int cx = -1; cx <= 1; cx++) {
                     if (rx + cx == 0) continue;
                     int checkR = n.r + rx;
                     int checkC = n.c + cx;
@@ -316,8 +315,8 @@ public class Day10 {
         dx.put(0, Map.of(-1, List.of('-', 'L', 'F'), 1, List.of('-', 'J', '7')));
         part2(map, sr, sc);
         long count = 0;
-        for (int i = 0; i < map.length; i ++ ){
-            for (int j = 0; j < map[0].length; j ++) {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[0].length; j++) {
                 if (map[i][j] == '.') count++;
             }
         }
@@ -325,8 +324,8 @@ public class Day10 {
     }
 
     static void sanitise(char[][] map) {
-        for (int i = 0; i < map.length; i ++) {
-            for (int j = 0; j < map[0].length; j ++) {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[0].length; j++) {
                 if (map[i][j] == '.') {
                     int hw = horizontalWalls(i, j, map);
                     if (hw % 2 == 0) map[i][j] = '0';
@@ -338,7 +337,7 @@ public class Day10 {
     private static int horizontalWalls(int i, int j, char[][] map) {
         int horizontalWalls = 0;
         char prev = map[i][j];
-        for (int col = j + 1; col < map[0].length; col ++) {
+        for (int col = j + 1; col < map[0].length; col++) {
             char curr = map[i][col];
             if (curr == '-') {
                 while (curr == '-') {
@@ -383,8 +382,8 @@ public class Day10 {
                 if (!outOfBounds(newR, newC, map) && !visited[newR][newC]) {
                     queue.add(next);
                 }
-                for (int rx = -1; rx <= 1; rx ++) {
-                    for (int cx = -1; cx <= 1; cx ++) {
+                for (int rx = -1; rx <= 1; rx++) {
+                    for (int cx = -1; cx <= 1; cx++) {
                         if (rx + cx == 0) continue;
                         int checkR = n.r + rx;
                         int checkC = n.c + cx;
@@ -410,8 +409,8 @@ public class Day10 {
             Node n = queue.poll();
             map[n.r][n.c] = '0';
             tiles++;
-            for (int rx = -1; rx <= 1; rx ++) {
-                for (int cx = -1; cx <= 1; cx ++) {
+            for (int rx = -1; rx <= 1; rx++) {
+                for (int cx = -1; cx <= 1; cx++) {
                     if (rx + cx == 0) continue;
                     int checkR = n.r + rx;
                     int checkC = n.c + cx;

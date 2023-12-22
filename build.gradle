@@ -1,0 +1,43 @@
+// Apply the Java plugin to add support for Java
+apply plugin: 'java'
+
+
+// Set the group for the project (usually represents your organization)
+group = 'com.example'
+
+// Set the version of the project
+version = '1.0.0'
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+
+    test {
+        java {
+            srcDirs = ['test']
+        }
+    }
+}
+
+// In this block, you declare where to find the dependencies of your project
+repositories {
+    // Use jcenter for resolving dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
+
+// In this block, you declare the dependencies for your production and test code
+dependencies {
+    // The production code uses the SLF4J logging API at compile time
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+
+    // Declare the dependency for your favourite test framework you want to use in your tests.
+    // TestNG is used in this example
+    testImplementation 'org.testng:testng:7.1.0'
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-math3
+    implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6'
+
+}
