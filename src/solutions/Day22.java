@@ -9,14 +9,7 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 public class Day22 {
 
@@ -62,20 +55,14 @@ public class Day22 {
         System.out.println(bricks);
         bricks.remove(0);
         long count = 0;
-        LinkedList<List<Brick>> bricksByLevel = new LinkedList<>();
+        Map<Integer, List<Brick>> bricksByLevel = new HashMap<>();
         for (var brick : bricks) {
-            if (bricksByLevel.isEmpty()) {
-                bricksByLevel.add(new LinkedList<>(List.of(brick)));
-            } else {
-                List<Brick> previousLevel = bricksByLevel.getLast();
-                if (previousLevel.get(0).a.z == brick.a.z) {
-                    previousLevel.add(brick);
-                } else {
-                    bricksByLevel.add(new LinkedList<>(List.of(brick)));
-                }
+            if (!bricksByLevel.containsKey(brick.a.z)) {
+                bricksByLevel.put(brick.a.z, new LinkedList<>());
             }
+            bricksByLevel.get(brick.a.z).add(brick);
         }
-        for (int i = 1; i < bricksByLevel.size(); i ++) {
+      /*  for (int i = 1; i < bricksByLevel.size(); i ++) {
             List<Brick> previousLevel = bricksByLevel.get(i - 1);
             if (previousLevel.size() == 1) continue;
             List<Brick> currentLevel = bricksByLevel.get(i);
@@ -86,14 +73,35 @@ public class Day22 {
                         if (k == j) continue;
                         Brick intersectionCopy = new Brick(brick.name +" copy", new Point(brick.a.x, brick.a.y, brick.a.z - 1), new Point(brick.b.x, brick.b.y, brick.b.z - 1));
                         if (!previousLevel.get(k).intersects(intersectionCopy)) {
+                            System.out.println(previousLevel.get(k).name + " not intersecting with " + intersectionCopy.name);
                             intersectsAll = false;
+                            break;
                         }
                     }
                     if (intersectsAll) count++;
                 }
             }
+        }*/
+        for (var level : bricksByLevel.entrySet()) {
+            int l = level.getKey();
+            if (bricksByLevel.containsKey(l + 1)) {
+                List<Brick> currLevel = bricksByLevel.get(l);
+                List<Brick> nextLevel = bricksByLevel.get(l + 1);
+                for (int ignoreIndex = 0; ignoreIndex < currLevel.size(); ignoreIndex++) {
+                    boolean intersectsAll = true;
+                    for (int i = 0; i < currLevel.size() && intersectsAll; i++) {
+                        if (i == ignoreIndex) continue;
+                        for (var brick : nextLevel) {
+                            if (!brick.intersects(currLevel.get(i))) {
+                                intersectsAll = false;
+                                break;
+                            }
+                        }
+                        count++;
+                    }
+                }
+            } else count += level.getValue().size();
         }
-        count += bricksByLevel.get(bricksByLevel.size() - 1).size();
         return count;
     }
 
