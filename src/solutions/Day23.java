@@ -245,14 +245,15 @@ public class Day23 {
                 continue;
             }
             for (int[] d : dx) {
-                Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1, current.visited);
+                Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1);
                 Block toAdd = next;
                 while (next.canPlaceOnMap(map) && !next.isIntersection(map)) {
                     toAdd = next;
-                    next = new Block(next.r + d[0], next.c + d[1], next.step + 1, next.visited);
+                    next = new Block(next.r + d[0], next.c + d[1], next.step + 1);
                 }
                 if (next.isIntersection(map)) toAdd = next;
-                if (toAdd.canPlace(map)) {
+                if (toAdd.canPlaceOnMap(map) && current.visited.add(toAdd.getKey())) {
+                    toAdd.visited = new HashSet<>(current.visited);
                     stack.push(toAdd);
                 }
             }
@@ -298,25 +299,27 @@ public class Day23 {
 
     public static Long part2(char[][] map) {
         Queue<Block> q = new LinkedList<>();
-        Block start = new Block(0, 1, 0, new HashSet<>());
+        Block start = new Block(0, 1, 0,  new HashSet<>());
         q.add(start);
         long maxStep = 0;
+        Map<List<Integer>, Long> memo = new HashMap<>();
         while (!q.isEmpty()) {
             Block current = q.poll();
-//            System.out.println(current);
+            //System.out.println(current);
             if (current.r == map.length - 1 && current.c == map[0].length - 2) {
                 maxStep = Math.max(maxStep, current.step);
                 System.out.println("Found: " + maxStep);
                 continue;
             }
             for (int[] d : dx) {
-                //stop at intersections
-                Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1, current.visited);
+                Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1);
                 Block toAdd = next;
                 while (next.canPlaceOnMap(map) && !next.isIntersection(map)) {
                     toAdd = next;
-                    next = new Block(next.r + d[0], next.c + d[1], next.step + 1, next.visited);
+                    next = new Block(next.r + d[0], next.c + d[1], next.step + 1);
                 }
+                if (next.isIntersection(map)) toAdd = next;
+                toAdd.visited = new HashSet<>(current.visited);
                 if (toAdd.canPlace(map)) {
                     q.add(toAdd);
                 }
@@ -344,7 +347,22 @@ public class Day23 {
 
     public static class Block {
 
-        int r, c, step;
+        int r, c, step, it;
+
+        public Block(int r, int c, int step) {
+            this.r = r;
+            this.c = c;
+            this.step = step;
+        }
+
+        public Block(int r, int c, int step, int it, Set<List<Integer>> visited) {
+            this.r = r;
+            this.c = c;
+            this.step = step;
+            this.it = it;
+            this.visited = visited;
+        }
+
         Set<List<Integer>> visited = new HashSet<>();
 
         public Block(int r, int c, int step, Set<List<Integer>> visited) {
@@ -352,6 +370,10 @@ public class Day23 {
             this.c = c;
             this.step = step;
             this.visited = new HashSet<>(visited);
+        }
+
+        public int distanceTo(int r, int c) {
+            return Math.abs(r - this.r) + Math.abs(c - this.c);
         }
 
         public boolean canPlace(char[][] map) {
