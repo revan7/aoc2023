@@ -2,15 +2,8 @@ package solutions;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
+import java.util.function.ObjLongConsumer;
 
 public class Day23 {
 
@@ -51,7 +44,7 @@ public class Day23 {
             }
         }
         print(map);
-        return part1(map);
+        return part1DFSMemoJump(map);
     }
 
     static void print(char[][] arr) {
@@ -64,6 +57,7 @@ public class Day23 {
     }
 
     public static Long part1(char[][] map) {
+        var startTime = System.currentTimeMillis();
         Queue<Block> q = new LinkedList<>();
         Block start = new Block(0, 1, 0, new HashSet<>());
         q.add(start);
@@ -91,6 +85,214 @@ public class Day23 {
                 }
             }
         }
+        var endtime = System.currentTimeMillis();
+        System.out.println((endtime - startTime) / 1000);
+        return maxStep;
+    }
+
+    public static Long part1DFS(char[][] map) {
+        var startTime = System.currentTimeMillis();
+        Stack<Block> stack = new Stack<>();
+        Block start = new Block(0, 1, 0, new HashSet<>());
+        long maxStep = 0;
+        stack.add(start);
+        Set<Block> visiting = new HashSet<>();
+        while (!stack.isEmpty()) {
+            Block current = stack.pop();
+            visiting.remove(current);
+            if (current.r == map.length - 1 && current.c == map[0].length - 2) {
+                //System.out.println(current);
+                maxStep = Math.max(maxStep, current.step);
+                //System.out.println("Step : " + maxStep);
+                continue;
+            }
+            String slopeKey = "" + map[current.r][current.c];
+            if (slopeDxIndices.containsKey(slopeKey)) {
+                int[] d = dx[slopeDxIndices.get(slopeKey)];
+                Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1, current.visited);
+                if (next.canPlace(map)) {
+                    stack.push(next);
+                    visiting.add(next);
+                }
+            } else {
+                for (int[] d : dx) {
+                    Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1, current.visited);
+                    if (next.canPlace(map)) {
+                        stack.push(next);
+                        visiting.add(next);
+                    }
+                }
+            }
+        }
+        var endTime = System.currentTimeMillis();
+        System.out.println((endTime - startTime) / 1000);
+        return maxStep;
+    }
+
+    public static Long part1DFSMemo(char[][] map) {
+        var startTime = System.currentTimeMillis();
+        Stack<Block> stack = new Stack<>();
+        Block start = new Block(0, 1, 0, new HashSet<>());
+        long maxStep = 0;
+        stack.add(start);
+        Set<Block> visiting = new HashSet<>();
+        Map<List<Integer>, Integer> memo = new HashMap<>();
+        while (!stack.isEmpty()) {
+            Block current = stack.pop();
+            if (memo.containsKey(current.getKey())) {
+                if (current.step < memo.get(current.getKey())) continue;
+            }
+            if (current.r == map.length - 1 && current.c == map[0].length - 2) {
+                //System.out.println(current);
+                maxStep = Math.max(maxStep, current.step);
+                System.out.println("Step : " + maxStep);
+                continue;
+            }
+            String slopeKey = "" + map[current.r][current.c];
+            if (slopeDxIndices.containsKey(slopeKey)) {
+                int[] d = dx[slopeDxIndices.get(slopeKey)];
+                Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1, current.visited);
+                if (next.canPlace(map)) {
+                    stack.push(next);
+                    visiting.add(next);
+                }
+            } else {
+                for (int[] d : dx) {
+                    Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1, current.visited);
+                    if (next.canPlace(map)) {
+                        stack.push(next);
+                        visiting.add(next);
+                    }
+                }
+            }
+            memo.put(current.getKey(), current.step);
+        }
+        var endTime = System.currentTimeMillis();
+        System.out.println((endTime - startTime) / 1000);
+        return maxStep;
+    }
+
+    public static Long part1DFSMemoJump(char[][] map) {
+        var startTime = System.currentTimeMillis();
+        Stack<Block> stack = new Stack<>();
+        Block start = new Block(0, 1, 0, new HashSet<>());
+        long maxStep = 0;
+        stack.add(start);
+        Set<Block> visiting = new HashSet<>();
+        Map<List<Integer>, Integer> memo = new HashMap<>();
+        while (!stack.isEmpty()) {
+            Block current = stack.pop();
+//            System.out.println(current);
+/*            if (memo.containsKey(current.getKey())) {
+                if (current.step < memo.get(current.getKey())) continue;
+            }*/
+            if (current.r == map.length - 1 && current.c == map[0].length - 2) {
+                //System.out.println(current);
+                maxStep = Math.max(maxStep, current.step);
+                System.out.println("Step : " + maxStep);
+                continue;
+            }
+            String slopeKey = "" + map[current.r][current.c];
+            if (slopeDxIndices.containsKey(slopeKey)) {
+                int[] d = dx[slopeDxIndices.get(slopeKey)];
+                Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1, current.visited);
+                Block toAdd = next;
+                while (next.canPlaceOnMap(map) && !next.isIntersection(map)) {
+                    toAdd = next;
+                    next = new Block(next.r + d[0], next.c + d[1], next.step + 1, next.visited);
+                }
+                if (toAdd.canPlace(map)) {
+                    stack.push(toAdd);
+                }
+            } else {
+                for (int[] d : dx) {
+                    Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1, current.visited);
+                    Block toAdd = next;
+                    while (next.canPlaceOnMap(map) && !next.isIntersection(map)) {
+                        toAdd = next;
+                        next = new Block(next.r + d[0], next.c + d[1], next.step + 1, next.visited);
+                    }
+                    if (next.isIntersection(map)) toAdd = next;
+                    if (toAdd.canPlace(map)) {
+                        stack.push(toAdd);
+                    }
+                }
+            }
+            memo.put(current.getKey(), current.step);
+        }
+        var endTime = System.currentTimeMillis();
+        System.out.println((endTime - startTime) / 1000);
+        return maxStep;
+    }
+    public static Long part2DFSMemoJump(char[][] map) {
+        var startTime = System.currentTimeMillis();
+        Stack<Block> stack = new Stack<>();
+        Block start = new Block(0, 1, 0, new HashSet<>());
+        long maxStep = 0;
+        stack.add(start);
+        Set<Block> visiting = new HashSet<>();
+        Map<List<Integer>, Integer> memo = new HashMap<>();
+        while (!stack.isEmpty()) {
+            Block current = stack.pop();
+//            System.out.println(current);
+/*            if (memo.containsKey(current.getKey())) {
+                if (current.step < memo.get(current.getKey())) continue;
+            }*/
+            if (current.r == map.length - 1 && current.c == map[0].length - 2) {
+                //System.out.println(current);
+                maxStep = Math.max(maxStep, current.step);
+                System.out.println("Step : " + maxStep);
+                continue;
+            }
+            for (int[] d : dx) {
+                Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1, current.visited);
+                Block toAdd = next;
+                while (next.canPlaceOnMap(map) && !next.isIntersection(map)) {
+                    toAdd = next;
+                    next = new Block(next.r + d[0], next.c + d[1], next.step + 1, next.visited);
+                }
+                if (next.isIntersection(map)) toAdd = next;
+                if (toAdd.canPlace(map)) {
+                    stack.push(toAdd);
+                }
+            }
+            memo.put(current.getKey(), current.step);
+        }
+        var endTime = System.currentTimeMillis();
+        System.out.println((endTime - startTime) / 1000);
+        return maxStep;
+    }
+
+    public static Long part2DFSMemo(char[][] map) {
+        var startTime = System.currentTimeMillis();
+        Stack<Block> stack = new Stack<>();
+        Block start = new Block(0, 1, 0, new HashSet<>());
+        long maxStep = 0;
+        stack.add(start);
+        Set<Block> visiting = new HashSet<>();
+        Map<List<Integer>, Integer> memo = new HashMap<>();
+        while (!stack.isEmpty()) {
+            Block current = stack.pop();
+            if (memo.containsKey(current.getKey())) {
+                if (current.step < memo.get(current.getKey())) continue;
+            }
+            if (current.r == map.length - 1 && current.c == map[0].length - 2) {
+                //System.out.println(current);
+                maxStep = Math.max(maxStep, current.step);
+//                System.out.println("Step : " + maxStep);
+                continue;
+            }
+            for (int[] d : dx) {
+                Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1, current.visited);
+                if (next.canPlace(map)) {
+                    stack.push(next);
+                    visiting.add(next);
+                }
+            }
+            memo.put(current.getKey(), current.step);
+        }
+        var endTime = System.currentTimeMillis();
+        System.out.println((endTime - startTime) / 1000);
         return maxStep;
     }
 
@@ -101,27 +303,22 @@ public class Day23 {
         long maxStep = 0;
         while (!q.isEmpty()) {
             Block current = q.poll();
-            //System.out.println(current);
+//            System.out.println(current);
             if (current.r == map.length - 1 && current.c == map[0].length - 2) {
                 maxStep = Math.max(maxStep, current.step);
+                System.out.println("Found: " + maxStep);
                 continue;
             }
-            String slopeKey = "" + map[current.r][current.c];
-            if (slopeDxIndices.containsKey(slopeKey)) {
-                List<Integer> indices = slopeDxIndicesPart2.get(slopeKey);
-                for (int i : indices) {
-                    int[] d = dx[i];
-                    Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1, current.visited);
-                    if (next.canPlace(map)) {
-                        q.add(next);
-                    }
+            for (int[] d : dx) {
+                //stop at intersections
+                Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1, current.visited);
+                Block toAdd = next;
+                while (next.canPlaceOnMap(map) && !next.isIntersection(map)) {
+                    toAdd = next;
+                    next = new Block(next.r + d[0], next.c + d[1], next.step + 1, next.visited);
                 }
-            } else {
-                for (int[] d : dx) {
-                    Block next = new Block(current.r + d[0], current.c + d[1], current.step + 1, current.visited);
-                    if (next.canPlace(map)) {
-                        q.add(next);
-                    }
+                if (toAdd.canPlace(map)) {
+                    q.add(toAdd);
                 }
             }
         }
@@ -142,7 +339,7 @@ public class Day23 {
             }
         }
         print(map);
-        return part2(map);
+        return part2DFSMemoJump(map);
     }
 
     public static class Block {
@@ -160,6 +357,24 @@ public class Day23 {
         public boolean canPlace(char[][] map) {
             if (r < 0 || c < 0) return false;
             return r < map.length && c < map[0].length && ((map[r][c] == '.') || slopeDxIndices.containsKey(String.valueOf(map[r][c]))) && visited.add(getKey());
+        }
+
+        public boolean canPlaceOnMap(char[][] map) {
+            if (r < 0 || c < 0) return false;
+            return r < map.length && c < map[0].length && ((map[r][c] == '.') || slopeDxIndices.containsKey(String.valueOf(map[r][c])));
+        }
+
+        public boolean isIntersection(char[][] map) {
+            if (canPlaceOnMap(map)) {
+                for (int i = 0; i < dx.length; i ++) {
+                    int[] d = dx[i];
+                    int[] e = dx[(i + 1) % 4];
+                    Block b = new Block(this.r + d[0], this.c + d[1], step, visited);
+                    Block c = new Block(this.r + e[0], this.c + e[1], step, visited);
+                    if (b.canPlaceOnMap(map) && c.canPlaceOnMap(map)) return true;
+                }
+            }
+            return false;
         }
 
         public List<Integer> getKey() {
